@@ -18,7 +18,6 @@ const config = {
   ],
 
   kit: {
-    target: '#svelte',
     adapter: adapter({
       pages: 'public',
       assets: 'public'

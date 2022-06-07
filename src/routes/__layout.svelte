@@ -6,8 +6,20 @@
   import SunIcon from 'heroicons-svelte/solid/SunIcon.svelte'
   import { browser } from '$app/env'
   import { name } from '$lib/info'
+  import EmailIcon from '$lib/components/EmailIcon.svelte'
+  import GithubIcon from '$lib/components/GithubIcon.svelte';
 
   let prefersLight = browser ? Boolean(JSON.parse(localStorage.getItem('prefersLight'))) : false
+
+  function toggleLightDarkMode() {
+    prefersLight = !prefersLight
+    localStorage.setItem('prefersLight', prefersLight.toString())
+    if (prefersLight) {
+      document.querySelector('html').classList.remove('dark')
+    } else {
+      document.querySelector('html').classList.add('dark')
+    }
+  }
 </script>
 
 <div class="flex flex-col min-h-screen">
@@ -19,32 +31,40 @@
         <a class="text-lg sm:text-2xl font-bold" href="/">
           {name}
         </a>
+        |
+        <a href="https://www.kvistsolutions.com/" class="ml-0 dark:text-white text-gray-800 text-xs font-bold group">
+          CTO at 
+          <span class="group-hover:underline">
+            Kvist Solutions
+          </span>
+        </a>
       </h2>
-      {#if browser}
+      <div class="flex items-center">
+        <div class="dark:text-white text-black flex items-center gap-3 mr-6">
+          <a class="text-xs" href="https://github.com/MathiasWP" title="My GitHub profile">
+            <GithubIcon />
+          </a>
+          <a class="text-xs" href="mailto:picker@kvistsolutions.com" title="Email me at picker@kvistsolutions.com">
+            <EmailIcon />
+          </a>
+        </div>
         <button
           type="button"
           role="switch"
           aria-label="Toggle Dark Mode"
           aria-checked={!prefersLight}
           class="h-4 w-4 sm:h-8 sm:w-8 sm:p-1"
-          on:click={() => {
-            prefersLight = !prefersLight
-            localStorage.setItem('prefersLight', prefersLight.toString())
-
-            if (prefersLight) {
-              document.querySelector('html').classList.remove('dark')
-            } else {
-              document.querySelector('html').classList.add('dark')
-            }
-          }}
+          on:click={toggleLightDarkMode}
         >
-          {#if prefersLight}
-            <MoonIcon class="text-slate-500" />
-          {:else}
-            <SunIcon class="text-slate-400" />
+          {#if browser}
+            {#if prefersLight}
+              <MoonIcon class="text-slate-500" />
+            {:else}
+              <SunIcon class="text-slate-400" />
+            {/if}
           {/if}
         </button>
-      {/if}
+      </div>
     </div>
     <main
       class="prose prose-slate prose-sm sm:prose sm:prose-slate sm:prose-lg sm:max-w-none dark:prose-invert flex flex-col w-full flex-grow py-4 px-4"
