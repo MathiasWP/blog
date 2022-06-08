@@ -1,7 +1,7 @@
 import { mdsvex } from 'mdsvex'
 import mdsvexConfig from './mdsvex.config.js'
 import preprocess from 'svelte-preprocess'
-import adapter from '@sveltejs/adapter-static'
+import adapter from '@sveltejs/adapter-vercel'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -18,15 +18,11 @@ const config = {
   ],
 
   kit: {
-    adapter: adapter({
-      pages: 'public',
-      assets: 'public'
-    }),
+    adapter: adapter(),
 
-    // if you are not using the static adapter and
-    // you don't want prerendering, remove this section
+    // todo: change to static adapter?
     prerender: {
-      entries: ['*', '/sitemap.xml', '/rss.xml']
+      default: true
     },
 
     vite: {
