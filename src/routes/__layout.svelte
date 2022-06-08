@@ -28,7 +28,7 @@
       <h2
         class="!text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 dark:from-violet-500 dark:to-pink-500"
       >
-        <a class="text-lg sm:text-2xl font-bold" rel="nofollow noopener noreferrer" target="_blank" href="/">
+        <a class="text-lg sm:text-2xl font-bold" href="/">
           {name}
         </a>
         |
