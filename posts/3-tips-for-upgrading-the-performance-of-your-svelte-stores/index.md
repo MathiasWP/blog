@@ -99,7 +99,7 @@ There's nothing wrong with this implementation, but we can do better! Reactive v
 3. User adds a third item
 4. User removes the third item
 
-Notice that 3 out of the 4 recomputations are unnecessary for our use case, because we only want to know if the cart is empty or not! This is where derived stores come into the picture. A store will only trigger an update if the previous and new value are [unequal](https://github.com/sveltejs/svelte/blob/7630a25db54f113102ea6d69b7d3e13e82b278fb/src/runtime/internal/utils.ts#L39), which means that if the value updates from `false` to `false`, nothing happens.
+Notice that 3 out of the 4 recomputations are unnecessary for our use case, because we only want to know if the cart is empty or not! This is where derived stores come into the picture. A store will only trigger an update if the previous and new value are [unequal](https://github.com/sveltejs/svelte/blob/7630a25db54f113102ea6d69b7d3e13e82b278fb/src/runtime/internal/utils.ts#L39), which means that if the value updates from `false` to `false`, nothing happens. Note that this mostly applies when the derived value is a [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), because the change is determined by a [strict equality check](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality).
 
 So the following setup will trigger 75% less updates in the same scenario:
 
@@ -115,10 +115,6 @@ const isEmpty = derived(cart, c => c.length === 0)
     Go to checkout
 </a>
 ```
-
-Note that this optimiation will in most cases only apply if the derived value is a [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), because the store does a strict equality check on the previous and new value.
-
-
 
 ## 3: Update state in batches
 
