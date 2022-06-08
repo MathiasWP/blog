@@ -35,10 +35,10 @@ You might think that doing something like this...
 
 ```svelte
 <script>
-import { state } from './global-store'
+import { store } from './global-store'
 
 onMount(() => {
-    $state.darkmode = true;
+    $store.darkmode = true;
 })
 </script>
 ```
@@ -46,15 +46,15 @@ onMount(() => {
 ...would only trigger updates on components listening to the `darkmode` property, but the truth is that there is no way for Svelte to know if the `darkmode` property or `authenticated` property was updated. This becomes easier to grasp if you look at how Svelte performs this update "under the hood" (with the normal API):
 
 ```ts
-state.update(s => {
+store.update(s => {
     s.darkmode = true; // Mutate object
     return s; // Return updated version of object
 })
 ```
 
-So it will trigger an update on every component that accesses at least one property from the store.
+Notice that the whole object is returned, so Svelte can only know that "something in this store was updated". All components that subcribe to the store must therefore be checked to determine if any of their state has been changed.
 
-This is because finding out which property was updated quickly becomes more expensive than letting Svelte's reactivity model figure out what should be updated. The first performance tip is therefore to split up your stores into smaller stores, keeping only data that is often used together in the same store:
+The first performance tip is therefore to split up your stores into smaller stores, keeping only data that is often used together in the same store:
 
 ```ts
 // store 1
@@ -139,18 +139,18 @@ It might not be that clear, but the first approach will trigger 1000 updates (`1
 
 So instead of doing the following...
 ```ts
-import { state } from './my-store'
+import { store } from './my-store'
 // Triggers 1000 updates if there are 10 subscribers
 listOfHundredItems.forEach(i => {
-    state.update(s => [...s, i])
+    store.update(s => [...s, i])
 })
 ```
 
 ...you should **always do**:
 ```ts
-import { state } from './my-store'
+import { store } from './my-store'
 // Triggers 10 updates if there are 10 subscribers
-state.update(s => [...s, ...listOfHundredItems])
+store.update(s => [...s, ...listOfHundredItems])
 ```
 
 If i had to only choose one optimization I'd choose this one. I worked on a issue where doing this single optimisation enhanced the performance time from 30+ seconds to around 400ms.
