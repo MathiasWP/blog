@@ -6,8 +6,6 @@ import adapter from '@sveltejs/adapter-vercel'
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   extensions: ['.svelte', ...mdsvexConfig.extensions],
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
   preprocess: [
     mdsvex(mdsvexConfig),
     [
@@ -16,15 +14,12 @@ const config = {
       })
     ]
   ],
-
   kit: {
     adapter: adapter(),
-
     // todo: change to static adapter?
     prerender: {
       default: true
     },
-
     vite: {
       // allows vite access to ./posts
       server: {
