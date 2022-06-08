@@ -1,7 +1,7 @@
-import path from 'path'
 import { visit } from 'unist-util-visit'
 import autolinkHeadings from 'rehype-autolink-headings'
 import slugPlugin from 'rehype-slug'
+import rehypeExternalLink from 'rehype-external-links'
 import relativeImages from 'mdsvex-relative-images'
 
 export default {
@@ -12,6 +12,7 @@ export default {
   remarkPlugins: [videos, relativeImages],
   rehypePlugins: [
     slugPlugin,
+    rehypeExternalLink,
     [
       autolinkHeadings,
       {

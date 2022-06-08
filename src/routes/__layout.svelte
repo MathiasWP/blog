@@ -28,11 +28,11 @@
       <h2
         class="!text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-500 dark:from-violet-500 dark:to-pink-500"
       >
-        <a class="text-lg sm:text-2xl font-bold" href="/">
+        <a class="text-lg sm:text-2xl font-bold" rel="nofollow noopener noreferrer" target="_blank" href="/">
           {name}
         </a>
         |
-        <a href="https://www.kvistsolutions.com/" class="ml-0 dark:text-white text-gray-800 text-xs font-bold group">
+        <a rel="nofollow noopener noreferrer" target="_blank" href="https://www.kvistsolutions.com/" class="ml-0 dark:text-white text-gray-800 text-xs font-bold group">
           CTO at 
           <span class="group-hover:underline">
             Kvist Solutions
@@ -41,7 +41,7 @@
       </h2>
       <div class="flex items-center">
         <div class="dark:text-white text-black flex items-center gap-3 mr-6">
-          <a class="text-xs" href="https://github.com/MathiasWP" title="My GitHub profile">
+          <a class="text-xs" rel="nofollow noopener noreferrer" target="_blank" href="https://github.com/MathiasWP" title="My GitHub profile">
             <GithubIcon />
           </a>
           <a class="text-xs" href="mailto:picker@kvistsolutions.com" title="Email me at picker@kvistsolutions.com">

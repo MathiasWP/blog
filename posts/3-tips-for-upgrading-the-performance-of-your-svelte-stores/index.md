@@ -6,19 +6,20 @@ date: 2022-01-08
 Svelte's store system is an elegant, but low-level, implementation of a fully fletched state management system.
 Stores themselves are not very complex, and most of the "magic" behind reactive global state in Svelte is caused by Svelte's internal reactivity model.
 
-You don't actually have to use the store exported from `svelte/store` to get reactive global state. As long as you have an object/class that follows the [Store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values-store-contract), Svelte will recognise it as a store and use it to perform UI updates. 
+You don't actually have to use the store exported from `svelte/store` to get reactive global state. As long as you have an object/class that follows the [Store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values-store-contract), Svelte will recognise it as a store and use it to perform UI updates.
 
 ```
 If it looks like a duck, swims like a duck, and quacks like a duck,
 then it probably is a duck.
 ```
 
-Knowing this, we can expect the Svelte echosystem to get scalable, sophisticated and performant implementations of handling complex global state. We don't even have to write a single line of Svelte code to create it, as long as it follows the contract! 
+Knowing this, we can expect the Svelte echosystem to get scalable, sophisticated and performant implementations of handling complex global state. We don't even have to write a single line of Svelte code to create it, as long as it follows the contract!
 
 If you want me to discuss scalable patterns for creating global state in Svelte then let me know! For now, we'll keep it simple and look at some concepts that you can apply to the default stores provided by Svelte.
 
 ## 1: Split up your stores
-Svelte does an amazing job at _"surgically updating the DOM when the state of your app changes"_, but it is not black magic. 
+
+Svelte does an amazing job at _"surgically updating the DOM when the state of your app changes"_, but it is not black magic.
 
 Let's say you have a store with the following setup:
 
@@ -46,9 +47,9 @@ onMount(() => {
 ...would only trigger updates on components listening to the `darkmode` property, but the truth is that there is no way for Svelte to know if the `darkmode` property or `authenticated` property was updated. This becomes easier to grasp if you look at how Svelte performs this update "under the hood" (with the normal API):
 
 ```ts
-store.update(s => {
-    s.darkmode = true; // Mutate object
-    return s; // Return updated version of object
+store.update((s) => {
+  s.darkmode = true // Mutate object
+  return s // Return updated version of object
 })
 ```
 
@@ -121,7 +122,7 @@ const isEmpty = derived(cart, c => c.length === 0)
 Svelte does the following when you update a store:
 
 1. Run the store update method
-2. Set value returned from the update method as the new store value 
+2. Set value returned from the update method as the new store value
 3. Envoke subscribers with the new store value
 
 There's nothing wrong with this approach, but let's look at the following scenario:
@@ -134,20 +135,21 @@ You have 10 components, each listening to some global state. You ask your server
 It might not be that obvious, but the first approach will trigger 1000 updates (`10 components * 100 update calls`), while the second approach will only trigger 10 updates (`10 components * 1 update call`)
 
 So instead of doing the following...
+
 ```ts
 import { store } from './my-store'
 // Triggers 1000 updates if there are 10 subscribers
-listOfHundredItems.forEach(i => {
-    store.update(s => [...s, i])
+listOfHundredItems.forEach((i) => {
+  store.update((s) => [...s, i])
 })
 ```
 
 ...you should **always do**:
+
 ```ts
 import { store } from './my-store'
 // Triggers 10 updates if there are 10 subscribers
-store.update(s => [...s, ...listOfHundredItems])
+store.update((s) => [...s, ...listOfHundredItems])
 ```
 
 If i had to only choose one optimization I'd choose this one. I worked on a issue where doing this single optimisation decreased the performance time from 30+ seconds to around 400ms.
-
