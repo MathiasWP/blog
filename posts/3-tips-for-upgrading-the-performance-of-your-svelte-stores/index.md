@@ -92,16 +92,16 @@ $: isEmpty = cart.length === 0
 </a>
 ```
 
-There's nothing wrong with this implementation, but we can do better! Reactive variables are always be re-computed whenever any of the data it depends on is updated. So because of this, the `isEmpty` will be updated if:
+There's nothing wrong with this implementation, but we can do better! Reactive variables are always be recomputed when data it depends on is updated. So because of this, the `isEmpty` variable will be recomputed if:
 
-1. The user adds the first item
-2. The user adds the second item
-3. The user adds the third item
-4. The user removes the third item
+1. User adds a first item
+2. User adds a second item
+3. User adds a third item
+4. User removes the third item
 
-Notice that 3 out of the 4 updates are unnecessary for our use case, because we only want to know if the cart is empty or not! This is where derived stores come into the picture. A store will only trigger an update if the previous and current value are [unequal](https://github.com/sveltejs/svelte/blob/7630a25db54f113102ea6d69b7d3e13e82b278fb/src/runtime/internal/utils.ts#L39), which means that if the value updates from `false` to `false`, nothing happens.
+Notice that 3 out of the 4 recomputations are unnecessary for our use case, because we only want to know if the cart is empty or not! This is where derived stores come into the picture. A store will only trigger an update if the previous and new value are [unequal](https://github.com/sveltejs/svelte/blob/7630a25db54f113102ea6d69b7d3e13e82b278fb/src/runtime/internal/utils.ts#L39), which means that if the value updates from `false` to `false`, nothing happens.
 
-So the following setup will trigger 75% less updates caused by state change:
+So the following setup will trigger 75% less updates in the same scenario:
 
 ```svelte
 <script>
@@ -116,13 +116,13 @@ const isEmpty = derived(cart, c => c.length === 0)
 </a>
 ```
 
-Note that this optimiation will in most cases only apply if the derived value is a [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), so i would advice only using it if you have state that is frequently updated.
+Note that this optimiation will in most cases only apply if the derived value is a [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), because the store does a strict equality check on the previous and new value.
 
 
 
 ## 3: Update state in batches
 
-Svelte does the following when you update a value in a store:
+Svelte does the following when you update a store:
 
 1. Run the store update method
 2. Set value returned from the update method as the new store value 
