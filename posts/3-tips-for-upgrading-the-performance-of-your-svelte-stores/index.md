@@ -84,7 +84,7 @@ Let's say that you have a checkout cart with multiple items, and you want to cha
 <script>
 import { cart } from './checkout-store'
 
-$: isEmpty = cart.length === 0
+$: isEmpty = $cart.length === 0
 </script>
 
 <a href="/checkout" style:background={isEmpty ? 'gray' : 'red'}>
