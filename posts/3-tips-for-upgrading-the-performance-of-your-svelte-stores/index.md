@@ -13,9 +13,9 @@ If it looks like a duck, swims like a duck, and quacks like a duck,
 then it probably is a duck.
 ```
 
-Knowing this, we can expect the Svelte echosystem to get scalable, sophisticated and performant implementations of handling complex global state. We don't even have to write a single line of Svelte code to creat it, as long as it follows the contract! 
+Knowing this, we can expect the Svelte echosystem to get scalable, sophisticated and performant implementations of handling complex global state. We don't even have to write a single line of Svelte code to create it, as long as it follows the contract! 
 
-If you want me to discuss scalable patterns for creating global state then let me know! For now, we'll keep it simple and look at some concepts that you can apply to the default stores provided by Svelte.
+If you want me to discuss scalable patterns for creating global state in Svelte then let me know! For now, we'll keep it simple and look at some concepts that you can apply to the default stores provided by Svelte.
 
 ## 1: Split up your stores
 Svelte does an amazing job at _"surgically updating the DOM when the state of your app changes"_, but it is not black magic. 
@@ -52,7 +52,7 @@ store.update(s => {
 })
 ```
 
-Notice that the whole object is returned, so Svelte can only know that "something in this store was updated". All components that subcribe to the store must therefore be checked to determine if any of their state has been changed.
+Notice that the whole object is returned, so Svelte can only know that _something in this store was updated_. All components that subcribe to the store must therefore be checked to determine if any of their state has been changed.
 
 The first performance tip is therefore to split up your stores into smaller stores, keeping only data that is often used together in the same store:
 
@@ -92,7 +92,7 @@ $: isEmpty = cart.length === 0
 </a>
 ```
 
-There's nothing wrong with this implementation, but we can do better! Reactive variables are always be recomputed when data it depends on is updated. So because of this, the `isEmpty` variable will be recomputed if:
+There's nothing wrong with this implementation, but we can do better! Reactive variables are recomputed when data they depend on is updated. So because of this, the `isEmpty` variable will be recomputed if:
 
 1. User adds a first item
 2. User adds a second item
@@ -153,5 +153,5 @@ import { store } from './my-store'
 store.update(s => [...s, ...listOfHundredItems])
 ```
 
-If i had to only choose one optimization I'd choose this one. I worked on a issue where doing this single optimisation enhanced the performance time from 30+ seconds to around 400ms.
+If i had to only choose one optimization I'd choose this one. I worked on a issue where doing this single optimisation decreased the performance time from 30+ seconds to around 400ms.
 
