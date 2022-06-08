@@ -135,7 +135,7 @@ You have 10 components, each listening to some global state. You ask your server
 1. Loop through the array and add every item
 2. Add the whole array
 
-It might not be that clear, but the first approach will trigger 1000 updates (`10 components * 100 update calls`), while the second approach will only trigger 10 updates (`10 components * 1 update call`)
+It might not be that obvious, but the first approach will trigger 1000 updates (`10 components * 100 update calls`), while the second approach will only trigger 10 updates (`10 components * 1 update call`)
 
 So instead of doing the following...
 ```ts
