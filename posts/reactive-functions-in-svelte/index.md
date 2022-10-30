@@ -5,7 +5,7 @@ date: 2022-10-30
 
 I am a huge fan of reactive declarations and reactive statements in Svelte, but i always felt that there was something missing. Recently I had an "aha"-moment, which made me realise something that filled this missing piece for me.
 
-### Preface
+### Backstory
 I was a Vue developer before moving over to Svelte, so reactivity was something i was familiar with. I noticed quite early
 that there was one thing Vue supported which Svelte didn't, and this was the reactivity of normal methods (not computed values) in markups.
 
